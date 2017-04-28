@@ -39,3 +39,7 @@ Route::resource('brands','BrandsController');
 
 //route for Product
 Route::resource('products','ProductsController');
+
+Route::get('products/area/{state_id}', 'ProductsController@getStateArea');
+
+Route::get('products/categories/{category_id}', 'ProductsController@getCategoryId');
