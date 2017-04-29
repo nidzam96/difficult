@@ -19,12 +19,33 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $products = Product::all();
+        $products = Product::with('brand','subcategory','area','user');
 
-        return view('products.index',compact('products'));
+        if (!empty($request->search_anything)) {
+            # code...
+            $search_anything = $request->search_anything;
+
+            $products = $products->where(function ($query) use ($search_anything) {
+                $query->orWhere('product_name', 'like', '%'.$search_anything.'%')
+                      ->orWhere('product_desc', 'like', '%'.$search_anything.'%');
+            });
+        }
+
+        // if (!empty($request->state_id)) {
+        //     # code...
+        //     $state_id = $request->state_id;
+        // }
+
+        $products = $products->paginate(5);
+
+        $brands = Brand::pluck('brand_name', 'id');
+        $categories = Category::pluck('category_name', 'id');
+        $states = State::pluck('state_name', 'id');
+
+        return view('products.index',compact('products', 'brands', 'categories', 'states'));
     }
 
     /**
@@ -64,7 +85,16 @@ class ProductsController extends Controller
         $product->subcategory_id = $request->input('subcategory_id');
         $product->user_id = auth()->id();
 
+        if ($request->hasFile('product_image')) {
+            # code...
+            $path = $request->product_image->store('images');
+            $product->product_image = $request->$product_image->hashName();
+        }
+
         $product->save();
+
+        flash('Product successfully created')->overlay();
+
         return redirect() ->route('products.index');
     }
 
@@ -88,6 +118,17 @@ class ProductsController extends Controller
     public function edit($id)
     {
         //
+        $product = Product::find($id);
+
+        $brands = Brand::pluck('brand_name', 'id');
+        $states = State::pluck('state_name', 'id');
+        $categories = Category::pluck('category_name', 'id');
+
+        $areas = $this->getStateArea($product->area->state_id);
+        
+        $subcategories = $this->getCategoryId($product->subcategory->category_id);
+
+        return view('products.edit', compact('brands', 'states', 'categories', 'product', 'areas', 'subcategories'));
     }
 
     /**
@@ -100,6 +141,29 @@ class ProductsController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $product = Product::findOrFail($id);
+
+        $product->product_name = $request->input('product_name');
+        $product->product_desc = $request->input('product_desc');
+        $product->product_condition = $request->input('product_condition');
+        $product->product_price = $request->input('product_price');
+        $product->brand_id = $request->input('brand_id');
+        $product->state_id = $request->input('state_id');
+        $product->area_id = $request->input('area_id');
+        $product->subcategory_id = $request->input('subcategory_id');
+        $product->user_id = auth()->id();
+
+        if ($request->hasFile('product_image')) {
+            # code...
+            $path = $request->product_image->store('images');
+            $product->product_image = $request->$product_image->hashName();
+        }
+
+        $product->save();
+
+        flash('Product successfully updaated')->overlay();
+
+        return redirect() ->route('products.index');
     }
 
     /**

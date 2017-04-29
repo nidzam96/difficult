@@ -25,14 +25,16 @@ class CreateProductRequest extends FormRequest
     {
         return [
             //
-            'product_name' => 'required',
-            'product_desc' => 'required',
-            'product_condition' => 'required | alpha',
-            'product_price' => 'required | numeric',
-            'brand_id' => 'required',
             'state_id' => 'required',
             'area_id' => 'required',
+            'category_id' => 'required',
             'subcategory_id' => 'required',
+            'brand_id' => 'required',
+            'product_name' => 'required',
+            'product_desc' => 'required',
+            'product_price' => 'required|numeric',
+            'product_condition' => 'required|alpha',
+            'product_image' => 'image|mimes:jpg,jpeg,png,gif',
         ];
     }
 }
