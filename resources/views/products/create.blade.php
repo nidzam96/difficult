@@ -51,7 +51,7 @@
                         <!-- brand_id select field -->
                         <div class="form-group {{ $errors->has('brand_id') ? 'has-error' : false }}">
                             {!! Form::label('brand_id', 'Brand') !!}
-                            {!! Form::select('brand_id', $brands, null, ['placeholder' => 'Select Brand', 'class'=>'form-control']); !!}
+                            {!! Form::select('brand_id', $brands, null, ['placeholder' => 'Select Brand', 'class'=>'form-control', 'id'=>'brand_id']); !!}
                         </div>
 
                         <!-- product__name field text -->
@@ -114,6 +114,7 @@
             if (selected_category_id.length > 0) {
 
                 getCategorySub(selected_category_id);
+                // getCategoryBrand(selected_category_id);
             }
 
             function getStateAreas(state_id){
@@ -190,6 +191,43 @@
 
                 getCategorySub(category_id);
             });
+
+            // function getCategoryBrand(category_id){
+
+            //     //getting category_id
+            //     // var category_id = $(this).val();
+            //     // console.log(category_id);
+
+            //     //sent state_id to controller
+            //     var ajax_url = '/products/brands/' + category_id;
+
+            //     $.get( ajax_url, function( data ) {
+                    
+            //         console.log(data);
+
+            //         $('#brand_id').empty().append('<option value="">Select brand</option>');
+
+            //         $.each(data, function(id,brand_name){
+            //             // console.log(data);
+            //             $('#brand_id').append('<option value='+id+'>'+brand_name+'</option>');
+            //         })
+
+            //         var selected_brand_id = '{{ old('brand_id') }}';
+
+            //         if(selected_brand_id.length > 0){
+                        
+            //             $('#brand_id').val(selected_brand_id);
+            //         }
+            //     });             
+            // }
+
+            // $("#category_id").change(function (){
+
+            //     //getting category_id
+            //     var category_id = $(this).val();
+
+            //     getCategoryBrand(category_id);
+            // });
         });
     </script>
 @endsection

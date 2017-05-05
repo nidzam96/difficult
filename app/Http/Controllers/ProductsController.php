@@ -34,6 +34,47 @@ class ProductsController extends Controller
             });
         }
 
+        if (!empty($request->search_state)) {
+            # code...
+            $search_state = $request->search_state;
+
+            $products = $products->whereHas('area', function ($query) use ($search_state){
+                $query->where('state_id', $search_state);
+            });
+        }
+
+        if (!empty($request->search_category)) {
+            # code...
+            $search_category = $request->search_category;
+
+            $products = $products->whereHas('subcategory', function ($query) use ($search_category){
+                $query->where('category_id', $search_category);
+            });
+        }
+
+        if (!empty($request->search_brand)) {
+            # code...
+            $search_brand = $request->search_brand;
+
+            $prodcts = $products->whereBrandId($search_brand);
+        }
+
+        if (!empty($request->search_area)) {
+            # code...
+            $search_area = $request->search_area;
+
+            $prodcts = $products->whereAreaId($search_area);
+        }
+
+        if (!empty($request->search_subcategory)) {
+            # code...
+            $search_subcategory = $request->search_subcategory;
+
+            $prodcts = $products->whereSubcategoryId($search_subcategory);
+        }
+
+        $products = $products->orderBy('id', 'desc');
+
         $products = $products->paginate(5);
 
         $brands = Brand::pluck('brand_name', 'id');
@@ -82,8 +123,8 @@ class ProductsController extends Controller
 
         if ($request->hasFile('product_image')) {
             # code...
-            $path = $request->product_image->store('images');
-            $product->product_image = $request->$product_image->hashName();
+            $path = $request->product_image->store('public/uploads');
+            $product->product_image = $request->product_image->hashName();
         }
 
         $product->save();
@@ -150,13 +191,13 @@ class ProductsController extends Controller
 
         if ($request->hasFile('product_image')) {
             # code...
-            $path = $request->product_image->store('images');
-            $product->product_image = $request->$product_image->hashName();
+            $path = $request->product_image->store('public/uploads');
+            $product->product_image = $request->product_image->hashName();
         }
 
         $product->save();
 
-        flash('Product successfully updaated')->overlay();
+        flash('Product successfully updated')->overlay();
 
         return redirect() ->route('products.index');
     }
@@ -170,6 +211,13 @@ class ProductsController extends Controller
     public function destroy($id)
     {
         //
+        $product = Product::findOrFail($id);
+
+        $product->delete();
+
+        flash('Product successfully deleted')->overlay();
+
+        return redirect()->route('products.index');
     }
 
     //Return area for state
@@ -186,6 +234,15 @@ class ProductsController extends Controller
 
         // echo $category_id;
         $category = Subcategory::whereCategoryId($category_id)->pluck('subcategory_name', 'id');
+
+        return $category;
+    }
+
+    //Return brands for category
+    public function getCategoryBrand($category_id){
+
+        // echo $category_id;
+        $brand = Brand::whereCategoryId($category_id)->pluck('brand_name', 'id');
 
         return $category;
     }

@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sweetalert.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -92,6 +93,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
 
     <script>
         $('#flash-overlay-modal').modal();

@@ -43,3 +43,5 @@ Route::resource('products','ProductsController');
 Route::get('products/area/{state_id}', 'ProductsController@getStateArea');
 
 Route::get('products/categories/{category_id}', 'ProductsController@getCategoryId');
+
+// Route::get('products/brands/{category_id}', 'ProductsController@getCategoryBrand');
