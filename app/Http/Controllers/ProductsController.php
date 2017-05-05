@@ -34,11 +34,6 @@ class ProductsController extends Controller
             });
         }
 
-        // if (!empty($request->state_id)) {
-        //     # code...
-        //     $state_id = $request->state_id;
-        // }
-
         $products = $products->paginate(5);
 
         $brands = Brand::pluck('brand_name', 'id');
