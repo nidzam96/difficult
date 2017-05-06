@@ -23,7 +23,7 @@
                 <div class="panel-body">
 
                     <!-- form -->
-                    {!! Form::open(['route' => ['products.update', $product->id], 'method'=>'PUT', 'files' => true ]) !!}
+                    {!! Form::open(['route' => ['admin.products.update', $product->id], 'method'=>'PUT', 'files' => true ]) !!}
 
                         <!-- state_id select field -->
                         <div class="form-group {{ $errors->has('state_id') ? 'has-error' : false }}">
@@ -93,7 +93,7 @@
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
 
-                            <a href="{{ route('my_products') }}" class="btn btn-default">Cancel</a>
+                            <a href="{{ route('admin.products.index') }}" class="btn btn-default">Cancel</a>
                         </div>
 
                     {!! Form::close() !!}
@@ -129,7 +129,7 @@
                 // console.log(state_id);
 
                 //sent state_id to controller
-                var ajax_url = '/products/area/' + state_id;
+                var ajax_url = '/admin/products/area/' + state_id;
 
                 $.get( ajax_url, function( data ) {
                     
@@ -167,7 +167,7 @@
                 // console.log(category_id);
 
                 //sent state_id to controller
-                var ajax_url = '/products/categories/' + category_id;
+                var ajax_url = '/admin/products/categories/' + category_id;
 
                 $.get( ajax_url, function( data ) {
                     

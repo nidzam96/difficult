@@ -67,7 +67,7 @@
 			</div>
 
 			<div class="panel panel-info">
-				<div class="panel-heading">Manage Products</div>
+				<div class="panel-heading">Manage My Listed Products</div>
 
 				<div class="panel-body">
 
@@ -87,7 +87,9 @@
 								<th>Category</th>
 								<th>Brands</th>
 								<th>Seller</th>
-								<th>Action</th>
+								@role('members')
+									<th>Action</th>
+								@endrole
 								<!-- <th>Seller</th> -->
 							</tr>
 						</thead>
@@ -111,10 +113,22 @@
 								<td>{{ $product->subcategory->subcategory_name }}</td>
 								<td>{{ $product->brand->brand_name }}</td>
 								<td>{{ $product->user->name }}</td>
-								<td>
-									<a href="{{ route('products.show', $product->id) }}" class="btn btn-warning">Show</a>
-								</td>
-								
+								@role('members')
+									<td>
+
+										<form method="POST" action="{{ route('products.destroy', $product->id) }}">
+											
+											<input type="hidden" name="_method" value="DELETE">
+
+											{{ csrf_field() }}
+
+											<a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-mini">Edit</a>
+											<button type="button" class="btn btn-danger delete">Delete</button>
+
+										</form>
+
+									</td>
+								@endrole
 							</tr>
 							@endforeach
 						</tbody>

@@ -9,7 +9,7 @@
 				<div class="panel-heading">Search Products</div>
 
 				<div class="panel-body">
-					<form action="{{ route('products.index') }}" method="GET">
+					<form action="{{ route('admin.products.index') }}" method="GET">
 
 						<div class="row">
 							<div class="col-md-3">
@@ -71,9 +71,7 @@
 
 				<div class="panel-body">
 
-					@role('members')
-						<a href="{{ route('products.create') }}" class="btn btn-primary">Create Product</a>
-					@endrole
+					<a href="{{ route('admin.products.create') }}" class="btn btn-primary">Create Product</a>
 
 					<table class="table table-bordered table-hover table-striped">
 						<thead>
@@ -112,9 +110,19 @@
 								<td>{{ $product->brand->brand_name }}</td>
 								<td>{{ $product->user->name }}</td>
 								<td>
-									<a href="{{ route('products.show', $product->id) }}" class="btn btn-warning">Show</a>
+
+									<form method="POST" action="{{ route('admin.products.destroy', $product->id) }}">
+										
+										<input type="hidden" name="_method" value="DELETE">
+
+										{{ csrf_field() }}
+
+										<a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-warning btn-mini">Edit</a>
+										<button type="button" class="btn btn-danger delete">Delete</button>
+
+									</form>
+
 								</td>
-								
 							</tr>
 							@endforeach
 						</tbody>
@@ -158,7 +166,7 @@
                 // console.log(state_id);
 
                 //sent state_id to controller
-                var ajax_url = '/products/area/' + state_id;
+                var ajax_url = '/admin/products/area/' + state_id;
 
                 $.get( ajax_url, function( data ) {
                     
@@ -204,7 +212,7 @@
                 // console.log(category_id);
 
                 //sent state_id to controller
-                var ajax_url = '/products/categories/' + category_id;
+                var ajax_url = '/admin/products/categories/' + category_id;
 
                 $.get( ajax_url, function( data ) {
                     

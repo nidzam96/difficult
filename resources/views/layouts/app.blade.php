@@ -48,7 +48,13 @@
                         @if (Auth::guest())
 
                         @else
-                            <li><a href="{{ route('products.index') }}">Manage Products</a></li>
+                            <li><a href="{{ route('products.index') }}">Home</a></li>
+                            @role('members')
+                                <li><a href="{{ route('my_products') }}">My Products</a></li>
+                            @endrole
+                            @role('admin')
+                                <li><a href="{{ route('admin.products.index') }}">Manage Admin Products</a></li>
+                            @endrole
                         @endif
                     </ul>
 
@@ -94,6 +100,8 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+
+    @include('sweet::alert')
 
     <script>
         $('#flash-overlay-modal').modal();
